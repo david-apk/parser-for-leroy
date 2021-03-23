@@ -1,6 +1,5 @@
 # Парсер Json
-![GitHub Logo](/images/logo.png)
-Format: ![Alt Text](url)
+![GitHub Logo](LEROY_MERLIN_Guideli3.jpg)
 Это тестовое задание для отбора на должность Junior developer (Mobile middleware) компании Leroy Merlin
 
 # Тествое задание
