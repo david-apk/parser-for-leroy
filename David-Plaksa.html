@@ -1,0 +1,214 @@
+<!DOCTYPE html> 
+
+<html> 
+<head> 
+    <title>
+        Test by Sokolov David
+    </title> 
+
+    <style>
+        .paragraph {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1em;
+            width: 50%;
+            padding: 1em;
+            border: dashed 1px gray;
+            }
+    </style>
+</head> 
+<body style="font-family: Arial, Helvetica, sans-serif;  text-align: center;"> 
+    <h2 id="t">Test by Sokolov David</h2>
+    <a href="https://hh.ru/vacancy/43160242"><h3>For this vacancy</h3></a>
+    <div class="paragraph">
+        <h3>Название товара:</h3>
+        <span id="Name1"></span>
+    </div>
+    <div class="paragraph">
+        <h3>Массив номеров магазинов, <br>в которых есть товары в наличии:</h3>
+        <span>Регион:</pspan><br>
+        <sapn id="Name2"></span><br><br>
+        <span>Магазины:</pspan><br>
+        <sapn id="Name3"></span>
+    </div>
+    <div class="paragraph">
+        <h3>Номер магазина с <br>максимальным количеством товара:</h3>
+        <sapn id="Name5"></span>
+    </div>
+    <div class="paragraph">
+        <h3>Количество товара <br>этом магазине:</h3>
+        <sapn id="Name4"></span> 
+    </div>
+    <br> 
+    <br> 
+    <br> 
+    <br> 
+    <br>
+
+
+
+    
+    <h1>Пример json для загрузки:</h1>
+    <div class="paragraph">
+    <p style="text-align: left;">
+        [{<br>
+                "displayedName": {<br>
+                    "displayedName": {<br>
+                        "value": [<br>
+                            "Профиль маячковый ПВХ 10 мм L3м"<br>
+                        ],<br>
+                        "description": "Полное наименование товара для клиента"<br>
+                        }<br>
+                    },<br>
+                "stock": {<br>
+                    "stocks": {<br>
+                            "34": {<br>
+                            "2": "35",<br>
+                            "3": "42",<br>
+                            "4": "58",<br>
+                            "32": "22",<br>
+                            "171": "0",<br>
+                            "176": "12"<br>
+                        }<br>
+                    }<br>
+                }<br>
+            }]<br>
+        </p>
+    </div>
+    <br><br>
+
+    <form> 
+        <div class="paragraph">
+            <div style="margin-top: 1vw; display: flex; min-height: 1vw;">
+                <h1 style="color: white;"></h1>
+                <textarea type="text" name='jsonInput' id="input_id" style=" margin-left: auto;
+                margin-right: auto; height: 7vw; min-width: 90%; text-align: left; min-height: 1vw; padding: 1vw; "></textarea>
+            </div>
+            <br>
+        </div>
+      <div class="btn" style="width: 30%; margin-top: 2vw;
+        min-height: 50px;min-width: 180px; padding:0.5vw;
+        font-size: 40px; color: rgb(255, 255, 255);
+        font-weight: bolder;
+        margin-left: auto; margin-right: auto;
+        background-color: rgb(109, 179, 140) ;" onclick= "showit();">Parse</div>
+      </form> 
+      <br> <br>
+      <br>
+      <br>
+<script>
+
+
+
+
+// input
+ var obj0 = {
+    "displayedName": {
+        "displayedName": {
+            "value": [
+                "Профиль маячковый ПВХ 10 мм L3м"
+            ],
+            "description": "Полное наименование товара для клиента"
+            }
+        },
+    "stock": {
+        "stocks": {
+                "34": {
+                "2": "35",
+                "3": "42",
+                "4": "58",
+                "5": "57",
+                "6": "112",
+                "20": "51",
+                "22": "78",
+                "26": "34",
+                "32": "22",
+                "35": "358",
+                "40": "28",
+                "43": "68",
+                "45": "58",
+                "49": "31",
+                "51": "29",
+                "56": "42",
+                "62": "26",
+                "64": "0",
+                "65": "57",
+                "86": "15",
+                "114": "41",
+                "117": "46",
+                "143": "46",
+                "162": "4",
+                "171": "0",
+                "176": "12"
+            }
+        }
+    }
+};
+
+
+// testing work
+function recursSearch(obj){
+for(var i in obj) {
+        // находим имя
+        if (i === "value") {
+            document.getElementById('Name1').textContent = obj[i];
+        }
+        // обходим тип-список
+        if (typeof(obj[i]) == "object" && i === "stocks") {
+            
+            for(var region in obj[i]) {
+                document.getElementById('Name2').textContent = region;
+                // находим магазины без 0
+                let arr = [];
+                let diсt = new Map();
+                for(var point in obj[i][region]) {
+                    if (obj[i][region][point] != "0") {
+                        arr.push(point);
+                        diсt.set(point,obj[i][region][point]);
+                    }
+                }
+                document.getElementById('Name3').textContent = arr;
+
+                // находим максимальное количество
+                maxValue = 0;
+                keyOfmaxValue = "";
+                diсt.forEach((value, key) => {
+                    if (parseInt(value) > maxValue) {
+                        maxValue = parseInt(value);
+                        keyOfmaxValue = key;
+                    }
+                });
+               
+                document.getElementById('Name4').textContent = maxValue;
+                document.getElementById('Name5').textContent = keyOfmaxValue;
+            }
+            
+        } 
+        if (typeof(obj[i]) == "object") {
+            recursSearch(obj[i]);
+        }
+        
+    }
+}
+
+
+// для похожих объектов
+function showit() {
+    let te = document.getElementById ('input_id').value;
+    var myobj = JSON.parse(te); 
+    obj0 = myobj;
+    recursSearch(obj0)
+    const el = document.getElementById('t');
+    el.scrollIntoView({behavior: "smooth"});
+}
+
+          
+
+// it's very simple
+recursSearch(obj0)
+
+
+</script>
+</body>
+<html>
